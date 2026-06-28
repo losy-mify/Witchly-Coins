@@ -45,7 +45,7 @@ jobs:
           PYTHONIOENCODING: utf-8
           WITCHLY_ACCOUNT: ${{ secrets.WITCHLY_ACCOUNT }}
           TG_BOT: ${{ secrets.TG_BOT }}
-          CRON_JOB: ${{ secrets.WITCHLY_CRON_JOB }}
+          CRON_JOB: ${{ secrets.CRON_JOB }}
           GOST_PROXY: ${{ secrets.GOST_PROXY }}
         run: python witchly_coins.py
 
