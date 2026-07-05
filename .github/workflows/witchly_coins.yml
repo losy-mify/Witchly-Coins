@@ -64,27 +64,26 @@ jobs:
             echo "✅ 推送成功"
           else
             echo "ℹ️ 无变更，跳过推送"
+          fi
           
       - name: 🧽 清理进程和临时文件
         if: always()
         run: |
-          pkill -f sing-box || true
-          pkill -f chromedriver || true
-          pkill -f chrome || true
-          pkill -f Xvfb || true
-          rm -f sing-box sing-box-config.json sing-box.log
+          pkill -f gost || true
+          pkill -f python || true
+          rm -f gost gost_*.tar.gz gost.log witchly_coins.py
 
       - name: 🧹 清理旧的工作流运行记录
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          runs=$(gh run list --workflow="${{ github.workflow }}" --limit=100 --json databaseId --jq '.[].databaseId')
+          runs=$(gh run list --repo ${{ github.repository }} --workflow="${{ github.workflow }}" --limit=100 --json databaseId --jq '.[].databaseId')
           count=0
           for run_id in $runs; do
             count=$((count + 1))
             if [ $count -gt 1 ]; then
               echo "删除运行记录: $run_id"
-              gh run delete $run_id || true
+              gh run delete $run_id --repo ${{ github.repository }} || true
             fi
           done
